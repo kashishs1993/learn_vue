@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Shopping List App</title>
+    <link rel="stylesheet" href="main.css" />
+  </head>
+
+  <body>
+    <div id="shopping-list">
+      <div class="header">
+        <h1>{{header || 'Welcome'}}</h1>
+        <button v-if="editing" @click="doEdit(false)" class="btn btn-cancel">Cancel</button>
+        <button v-else @click="doEdit(true)" class="btn btn-add">Add</button>
+
+      </div>
+      <div v-if="editing" class="addItemForm">
+      <input @keyup.enter="saveItem" type="text" v-model="newItem" placeholder="Add an Item" />
+      <p class="counter">{{characterCount}}/200</p>
+      <label>
+        <input type="checkbox" v-model="newHighItemPriority" />
+        High Priority
+      </label>
+      <button :disabled="newItem.length ===0" @click="saveItem" class="btn-primary">Save Item</button>
+    </div>
+    <p v-if="items.length ===0">no items</p>
+    <ul>
+
+      <li v-for="item in reversedItems" 
+      @click="togglePurchased(item)"
+      :key="item.id"
+      class="static-class"
+      :class="{strikeout: item.purchased, priority: item.newHighItemPriority}"
+      >
+      {{item.label}}</li>
+    </ul>
+
+
+    <script src="https://unpkg.com/vue@3"></script>
+    <script>
+      const shoppingList = Vue.createApp({
+        data() {
+          return {
+            header: "Shopping List App",
+            editing: false,
+            newItem: "",
+            newHighItemPriority: false,
+            items: [
+              { id: 1, label: "party hats" , purchased: true, newHighItemPriority: false},
+              { id: 2, label: "listing" , purchased: true, newHighItemPriority: true},
+              { id: 3, label: "listings" , purchased: false, newHighItemPriority: false},
+            ],
+          };
+        },
+        computed:{
+          reversedItems(){
+            return [...this.items].reverse() 
+          }
+        },
+        methods: {
+           saveItem(){
+             this.items.push({
+               id:this.items.length+1,
+               label:this.newItem,
+                newHighItemPriority:this.newHighItemPriority
+              })
+             this.newItem =""
+             this.newHighItemPriority = false
+
+           },
+           doEdit(editing){
+             this.editing = editing
+             this.newItem ="" 
+             this.newHighItemPriority = false
+             
+            },
+           togglePurchased(item){
+             item.purchased =!item.purchased
+           }
+        }
+      }).mount("#shopping-list");
+    </script>
+  </body>
+</html>
