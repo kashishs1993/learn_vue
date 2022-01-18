@@ -2,7 +2,7 @@
     <div class="portfolio">
         <p> {{des}} </p>
         <input v-model="addDescription">
-        <p> {{addDescription}} </p>
+        <p> {{addDes}} </p>
     </div>
 </template>
 
