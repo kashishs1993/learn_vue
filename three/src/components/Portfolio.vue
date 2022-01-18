@@ -19,6 +19,9 @@ export default {
 
 <style>
 p {
-    color:rgb(0, 0, 0)
+    color:rgb(0, 0, 0);
+    margin-right:20px;
+    margin-left: 20px;
+
 }
 </style>
